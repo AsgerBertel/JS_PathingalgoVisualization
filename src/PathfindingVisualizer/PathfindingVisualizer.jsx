@@ -3,7 +3,8 @@ import Node from './Node/Node';
 
 import './PathfindingVisualizer.css';
 import './Node/Node.css'
-import {dijkstra, getNodesInShortestPathOrder} from '../PathfindingVisualizer/Algorithms/djikstra_priv';
+import {dijkstra, getNodesInShortestPathOrder} from './Algorithms/Dijkstra';
+import {a_Star} from './Algorithms/A_STAR';
 
 const START_NODE_ROW = 10;
 const START_NODE_COL = 15;
@@ -160,6 +161,27 @@ export default class PathfindingVisualizer extends Component {
         }
 
     }
+    visualizeA_Star(){
+        this.resetAllNodesCSS(false);
+        const {grid} = this.state;
+        const startNode = grid[START_NODE_ROW][START_NODE_COL];
+        const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
+        const node = a_Star(grid, startNode, finishNode);
+        console.log(node);
+        this.animateA_Star(node);
+        console.log(node);
+    }
+    animateA_Star(visitedNodesInOrder) {
+        for (let i = 0; i <= visitedNodesInOrder.length; i++) {
+            const node = visitedNodesInOrder[i];
+            setTimeout(() => {
+                document.getElementById(`node-${node.row}-${node.col}`).className =
+                    'node node-visited';
+            },  20*i);
+
+        }
+
+    }
 
 
     render() {
@@ -175,6 +197,9 @@ export default class PathfindingVisualizer extends Component {
                 </button>
                 <button onClick={() => this.resetWallsAndGrid()}>
                     Reset walls
+                </button>
+                <button onClick={() => this.visualizeA_Star()}>
+                    Visualize A* algorithm
                 </button>
 
                 <div className="grid">
