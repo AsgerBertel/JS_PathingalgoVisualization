@@ -6,9 +6,9 @@ import './Node/Node.css'
 import {dijkstra, getNodesInShortestPathOrder} from './Algorithms/Dijkstra';
 import {a_Star} from './Algorithms/A_STAR';
 
-const START_NODE_ROW = 10;
+const START_NODE_ROW = 5;
 const START_NODE_COL = 15;
-const FINISH_NODE_ROW = 10;
+const FINISH_NODE_ROW = 15;
 const FINISH_NODE_COL = 45;
 let wallNodes = [];
 const GRID_ROW_SIZE = 20;
@@ -119,6 +119,27 @@ export default class PathfindingVisualizer extends Component {
         }
     }
 
+    animateShortestPathA_Star(finishNode){
+        const path = [];
+        console.log(finishNode);
+        debugger;
+        while(finishNode.parent !== undefined){
+            path.push(finishNode.parent);
+            finishNode = finishNode.parent;
+        }
+        console.log(path);
+        for(let i = path.length; i >= 0; i--){
+            const node = path[i];
+            if(node.isStart || node.isFinish){
+                continue;
+            }
+            setTimeout(() => {
+                document.getElementById(`node-${node.row}-${node.col}`).className =
+                    'node node-shortest-path';
+            }, 50*i)
+        }
+    }
+
     resetGrid(){
         this.resetAllNodesCSS(false);
         const grid = this.state.grid.slice();
@@ -126,7 +147,6 @@ export default class PathfindingVisualizer extends Component {
             grid[wallNodes[i].row][wallNodes[i].col] = wallNodes[i];
         }
         this.setState({grid: grid});
-        console.log(grid);
     }
     resetWallsAndGrid(){
         this.resetAllNodesCSS(true);
@@ -166,18 +186,25 @@ export default class PathfindingVisualizer extends Component {
         const {grid} = this.state;
         const startNode = grid[START_NODE_ROW][START_NODE_COL];
         const finishNode = grid[FINISH_NODE_ROW][FINISH_NODE_COL];
-        const node = a_Star(grid, startNode, finishNode);
-        console.log(node);
-        this.animateA_Star(node);
-        console.log(node);
+        const visitedNodesInOrder = a_Star(grid, startNode, finishNode);
+        this.animateA_Star(visitedNodesInOrder, visitedNodesInOrder);
     }
-    animateA_Star(visitedNodesInOrder) {
+    animateA_Star(visitedNodesInOrder, finishNode) {
         for (let i = 0; i <= visitedNodesInOrder.length; i++) {
             const node = visitedNodesInOrder[i];
+            if (i === visitedNodesInOrder.length) {
+                setTimeout(() => {
+                    this.animateShortestPath(finishNode);
+                }, 5* i);
+                return;
+            }
+            if(node.isStart  || node.isFinish || node.isWall){
+                continue;
+            }
             setTimeout(() => {
                 document.getElementById(`node-${node.row}-${node.col}`).className =
                     'node node-visited';
-            },  20*i);
+            },  10*i);
 
         }
 

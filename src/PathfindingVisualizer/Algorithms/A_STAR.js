@@ -1,7 +1,7 @@
 import {getNeighbours, getNodesInShortestPathOrder} from './Dijkstra';
 
 export function a_Star(grid, startNode, finishNode) {
-    debugger;
+
     let openList = [];
     let closedList = [];
     const visitedNodesInOrder = [];
@@ -9,21 +9,27 @@ export function a_Star(grid, startNode, finishNode) {
     startNode.g_value = 0;
 
     openList.push(startNode);
+    visitedNodesInOrder.push(startNode);
     startNode.isVisited = true;
     while(openList.length !== 0){
         sortNodesByF_Val(openList);
         let n = openList.shift();
         closedList.push(n);
-        console.log(closedList);
         visitedNodesInOrder.push(n);
         if(n === finishNode){
             return visitedNodesInOrder;
         }
+        if(n.isWall){
+            continue;
+        }
         const neighbours = getNeighbours(n, grid);
         for(const node of neighbours){
+            if(node.isWall){
+                continue;
+            }
             visitedNodesInOrder.push(node);
             node.parent = n;
-            node.h_value = linearDistance(node, finishNode);
+            node.h_value = manhattanDistance(node, finishNode);
             node.g_value = n.g_value+1;
             node.f_value = node.g_value + node.h_value;
             if(openList.includes(node)){
@@ -60,11 +66,9 @@ function linearDistance(node, finishNode){
     return Math.max(rowDistance, colDistance);
 }
 function manhattanDistance(node1, node2){
-    const manhattandistance = (node1.col-node1.row) + (node2.col-node2.row);
-    console.log(manhattandistance);
-    if(manhattandistance < 0){
-        return -1*manhattandistance;
-    }
-    return manhattandistance;
+    return Math.abs(node1.row - node2.row) + Math.abs(node1.col-node2.col);
+}
+function euclideanDistance(node1, node2){
+
 }
 
