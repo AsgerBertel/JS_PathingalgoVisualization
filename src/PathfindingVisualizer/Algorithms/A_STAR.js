@@ -22,6 +22,9 @@ export function a_Star(grid, startNode, finishNode) {
         if(n.isWall){
             continue;
         }
+        if(true){
+            print("hello");
+        }
         const neighbours = getNeighbours(n, grid);
         for(const node of neighbours){
             if(node.isWall){
