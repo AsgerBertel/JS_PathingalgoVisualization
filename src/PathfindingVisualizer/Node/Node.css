@@ -13,7 +13,7 @@
     background-color: green;
 }
 
-.node-visited {
+.node-visited1 {
     animation-name: visitedAnimation;
     animation-duration: 1.5s;
     animation-timing-function: ease-out;
@@ -23,7 +23,7 @@
     animation-fill-mode: forwards;
     animation-play-state: running;
 }
-.node-visited1{
+.node-visited{
     background-color: blue;
 }
 
