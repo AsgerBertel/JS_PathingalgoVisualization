@@ -4,6 +4,7 @@
     <mapping directory="" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/../Test" vcs="Git" />
     <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/JS_PathingalgoVisualization" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/my-app" vcs="Git" />
   </component>
 </project>
